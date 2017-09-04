@@ -85,7 +85,7 @@ module BotCommand
     end
 
     def start
-      url = URI.parse("https://mozgva-staging.herokuapp.com/api/v1/games/schedule?id=11")
+      url = URI.parse("https://mozgva.com/api/v1/games/schedule?id=1")
       schedule = JSON.parse(Net::HTTP.get(url))
       message = ""
       schedule.each do |key, value|
@@ -137,7 +137,7 @@ module BotCommand
       user.registration_data = rd
       user.registration_data.save
       if team_exists?(text)
-        url = URI.parse("https://mozgva-staging.herokuapp.com/api/v1/games/schedule?id=11")
+        url = URI.parse("https://mozgva.com/api/v1/games/schedule?id=1")
         schedule = JSON.parse(Net::HTTP.get(url))
         msg = []
         schedule.each do |key, value|
@@ -162,7 +162,7 @@ module BotCommand
 
     def team_exists?(team_name)
       name = URI.encode(team_name)
-      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva-staging.herokuapp.com/api/v1/teams/find?name=#{name}']
+      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva.com/api/v1/teams/find?name=#{name}']
       begin
         JSON.parse(response)["success"]
       rescue Exception
@@ -188,7 +188,7 @@ module BotCommand
         send_keyboard("Отменить", "Как называется Ваша команда? Напишите, пожалуйста, название в точь точь как на сайте mozgva.com")
         user.set_next_bot_command('BotCommand::TeamChecker')
       elsif text == "Зарегистрироваться как новая команда"
-        url = URI.parse("https://mozgva-staging.herokuapp.com/api/v1/games/schedule?id=11")
+        url = URI.parse("https://mozgva.com/api/v1/games/schedule?id=1")
         schedule = JSON.parse(Net::HTTP.get(url))
         msg = []
         schedule.each do |key, value|
@@ -218,13 +218,13 @@ module BotCommand
     def start
       if text == "Выслать мне секретный код"
         team_name = URI.encode(user.registration_data.team_name)
-        response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva-staging.herokuapp.com/api/v1/teams/find?name=#{team_name}']
+        response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva.com/api/v1/teams/find?name=#{team_name}']
         begin
           id = JSON.parse(response)["team"]["id"]
         rescue Exception
           false
         end
-        response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva-staging.herokuapp.com/api/v1/teams/#{id}/send_secret']
+        response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva.com/api/v1/teams/#{id}/send_secret']
         begin
           result = JSON.parse(response)
         rescue Exception
@@ -281,7 +281,7 @@ module BotCommand
 
 
     def register_team(registration_data)
-      endpoint_url = "https://mozgva-staging.herokuapp.com/api/v1/games/booking"
+      endpoint_url = "https://mozgva.com/api/v1/games/booking"
       api_key = "Test_afisha_api_key_654321"
       date = registration_data.date
       id = 11
@@ -326,7 +326,7 @@ module BotCommand
     end
 
     def start
-      url = URI.parse("https://mozgva-staging.herokuapp.com/api/v1/games/schedule?id=11")
+      url = URI.parse("https://mozgva.com/api/v1/games/schedule?id=1")
       schedule = JSON.parse(Net::HTTP.get(url))
       msg = []
       schedule.each do |key, value|
@@ -348,7 +348,7 @@ module BotCommand
 
     def start
       date = text
-      url = URI.parse("http://mozgva-staging.herokuapp.com/api/v1/games/schedule?id=11")
+      url = URI.parse("https://mozgva.com/api/v1/games/schedule?id=1")
       schedule = JSON.parse(Net::HTTP.get(url))
       msg = []
       if schedule[text]
@@ -451,7 +451,7 @@ module BotCommand
 
     def team_exists?(team_name)
       name = URI.encode(team_name)
-      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva-staging.herokuapp.com/api/v1/teams/find?name=#{name}']
+      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva.com/api/v1/teams/find?name=#{name}']
       begin
         JSON.parse(response)["success"]
       rescue Exception
@@ -497,7 +497,7 @@ module BotCommand
 
     def team_exists?(team_name)
       name = URI.encode(team_name)
-      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva-staging.herokuapp.com/api/v1/teams/find?name=#{name}']
+      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva.com/api/v1/teams/find?name=#{name}']
       begin
         JSON.parse(response)["success"]
       rescue Exception
@@ -589,7 +589,7 @@ module BotCommand
 
 
     def register_team(registration_data)
-      endpoint_url = "https://mozgva-staging.herokuapp.com/api/v1/games/booking"
+      endpoint_url = "https://mozgva.com/api/v1/games/booking"
       api_key = "Test_afisha_api_key_654321"
       date = registration_data.date
       id = 11
