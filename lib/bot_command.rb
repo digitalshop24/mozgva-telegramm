@@ -85,7 +85,7 @@ module BotCommand
     end
 
     def start
-      url = URI.parse("https://mozgva-staging.herokuapp.com/api/v1/games/schedule?id=11")
+      url = URI.parse("https://mozgva.com/api/v1/games/schedule?id=1")
       schedule = JSON.parse(Net::HTTP.get(url))
       message = ""
       schedule.each do |key, value|
@@ -103,7 +103,7 @@ module BotCommand
   #-------------------------------------------------------------------------------------------
   #-------------------------------------------------------------------------------------------
   #-------------------------------------------------------------------------------------------
-  
+
   class ExistingTeam < Base
 
     def should_start?
@@ -137,7 +137,7 @@ module BotCommand
       user.registration_data = rd
       user.registration_data.save
       if team_exists?(text)
-        url = URI.parse("https://mozgva-staging.herokuapp.com/api/v1/games/schedule?id=11")
+        url = URI.parse("https://mozgva.com/api/v1/games/schedule?id=1")
         schedule = JSON.parse(Net::HTTP.get(url))
         msg = []
         schedule.each do |key, value|
@@ -162,9 +162,9 @@ module BotCommand
 
     def team_exists?(team_name)
       name = URI.encode(team_name)
-      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva-staging.herokuapp.com/api/v1/teams/find?name=#{name}']
+      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva.com/api/v1/teams/find?name=#{name}']
       begin
-        JSON.parse(response)["success"]  
+        JSON.parse(response)["success"]
       rescue Exception
         false
       end
@@ -173,7 +173,7 @@ module BotCommand
     def undefined
       send_message("TeamChecker")
     end
-  
+
   end
 
 
@@ -188,7 +188,7 @@ module BotCommand
         send_keyboard("Отменить", "Как называется Ваша команда? Напишите, пожалуйста, название в точь точь как на сайте mozgva.com")
         user.set_next_bot_command('BotCommand::TeamChecker')
       elsif text == "Зарегистрироваться как новая команда"
-        url = URI.parse("https://mozgva-staging.herokuapp.com/api/v1/games/schedule?id=11")
+        url = URI.parse("https://mozgva.com/api/v1/games/schedule?id=1")
         schedule = JSON.parse(Net::HTTP.get(url))
         msg = []
         schedule.each do |key, value|
@@ -200,14 +200,14 @@ module BotCommand
         question = "На какую дату вы хотите зарегистрироваться?"
         send_keyboard(msg, question)
         user.set_next_bot_command('BotCommand::NewTeamDate')
-          
+
       end
     end
 
     def undefined
       send_message("Пожалуйста, выберите из списка снизу")
     end
-  
+
   end
 
   class SecretSender < Base
@@ -218,13 +218,13 @@ module BotCommand
     def start
       if text == "Выслать мне секретный код"
         team_name = URI.encode(user.registration_data.team_name)
-        response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva-staging.herokuapp.com/api/v1/teams/find?name=#{team_name}']
+        response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva.com/api/v1/teams/find?name=#{team_name}']
         begin
-          id = JSON.parse(response)["team"]["id"]  
+          id = JSON.parse(response)["team"]["id"]
         rescue Exception
           false
         end
-        response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva-staging.herokuapp.com/api/v1/teams/#{id}/send_secret']
+        response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva.com/api/v1/teams/#{id}/send_secret']
         begin
           result = JSON.parse(response)
         rescue Exception
@@ -239,7 +239,7 @@ module BotCommand
           send_keyboard(["Выслать мне секретный код", "Отменить"], "Что-то пошло не так:\n#{message}\nВведите код еще раз или отмените")
           user.set_next_bot_command('BotCommand::SecretSender')
         end
-        
+
 
       else
         if text == "Ввести новый секретный код"
@@ -247,12 +247,12 @@ module BotCommand
           user.set_next_bot_command('BotCommand::SecretSender')
         else
           if text == "Да"
-            user.registration_data.update_attribute(:secret, user.secret)  
+            user.registration_data.update_attribute(:secret, user.secret)
           else
             user.update_attribute(:secret, text)
             user.registration_data.update_attribute(:secret, text)
           end
-          
+
           response = register_team(user.registration_data)
           status = response["success"] if response.present?
           mess = response["message"] if response.present?
@@ -260,7 +260,7 @@ module BotCommand
             message = "Команда #{user.registration_data.team_name} в составе #{user.registration_data.member_amount} чел. зарегистрирована на игру #{user.registration_data.date}, в #{user.registration_data.games.first.time}. Телефон капитана: #{user.registration_data.phone}\nИмя капитана: #{user.nickname || (user.first_name.to_s + " " + user.last_name.to_s)}\nЧто бы продолжить нажмите /help"
             remove_keyboard(message)
             user.reset_next_bot_command
-            user.registration_data.destroy if user.registration_data.present? 
+            user.registration_data.destroy if user.registration_data.present?
           else
             if mess == "Вы уже записались на эту игру"
               remove_keyboard("Вы уже записались на эту игру\nЧто бы продолжить нажмите /help")
@@ -268,11 +268,11 @@ module BotCommand
             else
               send_keyboard(["Выслать мне секретный код", "Отменить"], "Неправильный код, введите еще раз")
               user.set_next_bot_command('BotCommand::SecretSender')
-            end          
+            end
           end
         end
       end
-      
+
     end
 
     def undefined
@@ -281,7 +281,7 @@ module BotCommand
 
 
     def register_team(registration_data)
-      endpoint_url = "https://mozgva-staging.herokuapp.com/api/v1/games/booking"
+      endpoint_url = "https://mozgva.com/api/v1/games/booking"
       api_key = "test_bot_api_key"
       date = registration_data.date
       id = 11
@@ -298,7 +298,7 @@ module BotCommand
   end
 
 
-  
+
 
 
   #NEW TEAM REGISTRATION----------------------------------------------------------------------
@@ -326,7 +326,7 @@ module BotCommand
     end
 
     def start
-      url = URI.parse("https://mozgva-staging.herokuapp.com/api/v1/games/schedule?id=11")
+      url = URI.parse("https://mozgva.com/api/v1/games/schedule?id=1")
       schedule = JSON.parse(Net::HTTP.get(url))
       msg = []
       schedule.each do |key, value|
@@ -348,7 +348,7 @@ module BotCommand
 
     def start
       date = text
-      url = URI.parse("http://mozgva-staging.herokuapp.com/api/v1/games/schedule?id=11")
+      url = URI.parse("http://mozgva.com/api/v1/games/schedule?id=1")
       schedule = JSON.parse(Net::HTTP.get(url))
       msg = []
       if schedule[text]
@@ -367,7 +367,7 @@ module BotCommand
           user.registration_data = rd
           user.registration_data.save
         end
-        
+
         #save date to the game
         #user.current_registration.set_date
         #it sets date
@@ -414,7 +414,7 @@ module BotCommand
         question = "Как будет называться Ваша команда?"
         send_keyboard("Отменить", question)
         user.set_next_bot_command('BotCommand::NewTeamName')
-      end   
+      end
     end
 
     def undefined
@@ -437,7 +437,7 @@ module BotCommand
         user.set_next_bot_command('BotCommand::AreYouSure')
       else
         user.update_attribute(:team_name, text)
-        user.registration_data.update_attribute(:team_name, text) if user.registration_data.status != "from matching existing team"        
+        user.registration_data.update_attribute(:team_name, text) if user.registration_data.status != "from matching existing team"
         question = "Пожалуйста, подтвердите название вашей команды, вы называетесь #{user.registration_data.team_name}?"
         send_keyboard(["Да", "Изменить название", "Отменить"], question)
         user.set_next_bot_command('BotCommand::AreYouSure')
@@ -451,9 +451,9 @@ module BotCommand
 
     def team_exists?(team_name)
       name = URI.encode(team_name)
-      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva-staging.herokuapp.com/api/v1/teams/find?name=#{name}']
+      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva.com/api/v1/teams/find?name=#{name}']
       begin
-        JSON.parse(response)["success"]  
+        JSON.parse(response)["success"]
       rescue Exception
         false
       end
@@ -497,9 +497,9 @@ module BotCommand
 
     def team_exists?(team_name)
       name = URI.encode(team_name)
-      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva-staging.herokuapp.com/api/v1/teams/find?name=#{name}']
+      response = %x[curl -X GET --header 'Accept: application/json' 'https://mozgva.com/api/v1/teams/find?name=#{name}']
       begin
-        JSON.parse(response)["success"]  
+        JSON.parse(response)["success"]
       rescue Exception
         false
       end
@@ -545,7 +545,7 @@ module BotCommand
           user.registration_data.update_attribute(:phone, text.to_i)
         end
 
-        
+
         if user.registration_data.status == "from matching existing team"
           if user.secret.present?
             question = "Всегда приятно пообщаться с опытным Мозгвичем. Но мне надо удостовериться что вы действительно участник команды. Назовите секретный код Вашей команды. (У каждой команды на Мозгве есть свой ключ. Это слово (его придумывает капитан) дает право другим игрокам управлять аккаунтом команды. Если вы не знаете Ваш секретный код, спросите его у капитана. Если вы и есть капитан, придумайте секретный код и укажите его на сайте, в личном кабинете, в разделе 'секретный код'.\nИспользовать секретный код #{user.secret}?"
@@ -556,13 +556,13 @@ module BotCommand
             send_keyboard(["Выслать мне секретный код", "Отменить"], question)
             user.set_next_bot_command('BotCommand::SecretSender')
           end
-      
+
         else
 
           response = register_team(user.registration_data)
           status = response["success"]
           message = response["message"]
-            
+
           if status
             message = "Команда #{user.registration_data.team_name} в составе #{user.registration_data.member_amount} чел. зарегистрирована на игру #{user.registration_data.date}, в #{user.registration_data.games.first.time}. Телефон капитана: #{user.registration_data.phone}\nИмя капитана: #{user.nickname || (user.first_name.to_s + " " + user.last_name.to_s)}\nЧто бы продолжить нажмите /help"
             remove_keyboard(message)
@@ -571,7 +571,7 @@ module BotCommand
             remove_keyboard(message.to_s + "\nЧто бы продолжить нажмите /help")
             user.reset_next_bot_command
           end
-        end      
+        end
 
       when "Нет"
         question = "Введите номер телефона в формате 7 xxx xxx xx xx (минимум 9 цифр)\nТакже вы можете указать номер в настройках /settings, чтобы не вводить его каждый раз при регистрации."
@@ -589,7 +589,7 @@ module BotCommand
 
 
     def register_team(registration_data)
-      endpoint_url = "https://mozgva-staging.herokuapp.com/api/v1/games/booking"
+      endpoint_url = "https://mozgva.com/api/v1/games/booking"
       api_key = "test_bot_api_key"
       date = registration_data.date
       id = 11
