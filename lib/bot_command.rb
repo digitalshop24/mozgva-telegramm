@@ -282,7 +282,7 @@ module BotCommand
 
     def register_team(registration_data)
       endpoint_url = "https://mozgva.com/api/v1/games/booking"
-      api_key = "test_bot_api_key"
+      api_key = "Test_afisha_api_key_654321"
       date = registration_data.date
       id = 11
       time = registration_data.games.first.time
@@ -590,7 +590,7 @@ module BotCommand
 
     def register_team(registration_data)
       endpoint_url = "https://mozgva.com/api/v1/games/booking"
-      api_key = "test_bot_api_key"
+      api_key = "Test_afisha_api_key_654321"
       date = registration_data.date
       id = 11
       time = registration_data.games.first.time
