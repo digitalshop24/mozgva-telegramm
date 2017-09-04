@@ -348,7 +348,7 @@ module BotCommand
 
     def start
       date = text
-      url = URI.parse("http://mozgva.com/api/v1/games/schedule?id=1")
+      url = URI.parse("https://mozgva.com/api/v1/games/schedule?id=1")
       schedule = JSON.parse(Net::HTTP.get(url))
       msg = []
       if schedule[text]
