@@ -284,7 +284,7 @@ module BotCommand
       endpoint_url = "https://mozgva.com/api/v1/games/booking"
       api_key = "Test_afisha_api_key_654321"
       date = registration_data.date
-      id = 11
+      id = 1
       time = registration_data.games.first.time
       phone = registration_data.phone
       captain_name = user.nickname || user.last_name || user.first_name
@@ -592,7 +592,7 @@ module BotCommand
       endpoint_url = "https://mozgva.com/api/v1/games/booking"
       api_key = "Test_afisha_api_key_654321"
       date = registration_data.date
-      id = 11
+      id = 1
       time = registration_data.games.first.time
       phone = registration_data.phone
       captain_name = user.nickname || user.last_name || user.first_name
