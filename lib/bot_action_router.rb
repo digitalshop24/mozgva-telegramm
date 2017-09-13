@@ -1,11 +1,10 @@
-include BotCommand
-
+require 'bot_command'
 
 class BotActionRouter
 
   attr_accessor :command, :user
 
-  MASTER_COMMANDS = {cancel: "Cancel"}
+  MASTER_COMMANDS = {game_registration: 'GameRegistration', help: 'Help', start: 'Start', schedule: "Schedule", new_team: "NewTeam", change_username: 'UserName', cancel: 'Cancel', existing_team: "ExistingTeam", settings: 'PersonalSettings'}
   MASTER_COMMANDS.default = "NotFound"
 
   def initialize(user, command)
@@ -14,14 +13,22 @@ class BotActionRouter
   end
 
   def fetch_action_object
-    command = user.get_next_bot_command || command_class_name
-    command.safe_constantize || unknown_command
+    if ["/cancel", "Отменить"].include?(command)
+      eval("BotCommand::Cancel")
+    else
+      class_name = user.get_next_bot_command || command_class_name
+      begin
+        eval(class_name)
+      rescue NameError
+        unknown_command
+      end
+    end
   end
 
   private
 
   def command_class_name
-    class_name = MASTER_COMMANDS[command.to_sym]
+    "BotCommand::" + MASTER_COMMANDS[command.to_sym]
   end
 
   def unknown_command

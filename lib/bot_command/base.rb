@@ -1,4 +1,8 @@
-class Base
+module BotCommand
+  require 'telegram/bot'
+  require 'net/http'
+
+  class Base
     attr_reader :user, :message, :api, :greeting
 
     def initialize(user, message)
@@ -7,6 +11,13 @@ class Base
       token = ENV['token']
       @api = ::Telegram::Bot::Api.new(token)
       @greeting = "Привет, меня зовут Мозгва_бот.\nЯ могу показать тебе актуальное расписание на ближайшие игры.\nИли даже зарегистрировать твою команду.\nВот что я умею:\n/game_registration - Регистриция на игру \n/schedule - Расписание игр\n/settings - Персональные настройки (Имя, название команды, секретный код, номер телефона. Используются при регистрации)"
+      # @mozgva_url = "https://mozgva.com"
+      # @mozgva_api_key = "Test_afisha_api_key_654321"
+      # @id = "1"
+
+      @mozgva_url = "https://mozgva-staging.herokuapp.com"
+      @mozgva_api_key = "test_bot_api_key"
+      @id = "11"
     end
 
     def should_start?
@@ -51,3 +62,4 @@ class Base
       @message[:message][:from]
     end
   end
+end
