@@ -7,7 +7,7 @@ module BotCommand
     def start
       if text == "Изменить название"
         user.registration_data.update_attribute(:status, "in progress")
-        question = "Как будет называться Ваша команда?"
+        question = "Так как же называть вашу команду?"
         send_keyboard("Отменить", question)
         user.set_next_bot_command('BotCommand::NewTeamName')
       elsif text == "Да"
@@ -16,14 +16,14 @@ module BotCommand
           send_keyboard(["Изменить название", "Перейти к регистрации существующей команды", "Отменить"], question)
           user.set_next_bot_command('BotCommand::AreYouSure')
         else
-          question = "Сколько человек в команде? Максимум 9 чел."
+          question = "Сколько человек в команде? Напоминаю, максимум 9"
           keys = %w(1 2 3 4 5 6 7 8 9 Отменить)
           send_keyboard(keys, question)
           user.set_next_bot_command('BotCommand::TeamMembers')
         end
       elsif text == "Перейти к регистрации существующей команды"
         user.registration_data.update_attribute(:status, "from matching existing team")
-        question = "Сколько человек в команде? Максимум 9 чел."
+        question = "Сколько человек в команде? Напоминаю, максимум 9"
         keys = %w(1 2 3 4 5 6 7 8 9 Отменить)
         send_keyboard(keys, question)
         user.set_next_bot_command('BotCommand::TeamMembers')

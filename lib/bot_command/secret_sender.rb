@@ -22,7 +22,7 @@ module BotCommand
         status = result["status"]
         message = result["message"]
         if status
-          send_keyboard("Отменить", "Код успешно выслан, введите его")
+          send_keyboard("Отменить", "Пожалуйста, введите код")
           user.set_next_bot_command('BotCommand::SecretSender')
         else
           send_keyboard(["Выслать мне секретный код", "Отменить"], "Что-то пошло не так:\n#{message}\nВведите код еще раз или отмените")
@@ -46,7 +46,7 @@ module BotCommand
           status = response["success"] if response.present?
           mess = response["message"] if response.present?
           if status
-            message = "Команда #{user.registration_data.team_name} в составе #{user.registration_data.member_amount} чел. зарегистрирована на игру #{user.registration_data.date}, в #{user.registration_data.games.first.time}. Телефон капитана: #{user.registration_data.phone}\nИмя капитана: #{user.nickname || (user.first_name.to_s + " " + user.last_name.to_s)}\nЧто бы продолжить нажмите /help"
+            message = "Все в порядке: команда #{user.registration_data.team_name} в количестве #{user.registration_data.member_amount} зарегистрирована на игру. Имя капитана и его телефон:\n#{user.nickname || (user.first_name.to_s + " " + user.last_name.to_s)} #{user.registration_data.phone} \nЧто бы продолжить нажмите /help"
             remove_keyboard(message)
             user.reset_next_bot_command
             user.registration_data.destroy if user.registration_data.present?
@@ -55,7 +55,7 @@ module BotCommand
               remove_keyboard("Вы уже записались на эту игру\nЧто бы продолжить нажмите /help")
               user.reset_next_bot_command
             else
-              send_keyboard(["Выслать мне секретный код", "Отменить"], "Неправильный код, введите еще раз")
+              send_keyboard(["Выслать мне секретный код", "Отменить"], "Давайте попробуем еще раз")
               user.set_next_bot_command('BotCommand::SecretSender')
             end
           end

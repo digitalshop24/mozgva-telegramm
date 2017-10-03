@@ -36,16 +36,16 @@ module BotCommand
           msg << time
         end
         msg << "Отменить"
-        question = "Выберите удобное вам время"
+        question = "Выберите удобное время"
         send_keyboard(msg, question)
         user.set_next_bot_command('BotCommand::NewTeamDateTime')
       else
-        send_message("Выберите дату из списка")
+        send_message("Выбирайте дату")
       end
     end
 
     def undefined
-      question = "Я понимаю даты только в формате дд.мм.гггг Например ответ '29.06.2017' означает что вы хотите зарегистрироваться на игру 29.06.2017 в Минкульте в 20:00. Что бы зарегистрироваться на Мозгву напишите дату и я зарегистрирую Вас на игру."
+      question = "Я понимаю только даты в формате дд.мм.гггг. Например, 29.06.2017 означает, что вам удобна игра 29-го июня."
       send_keyboard("Отменить", question)
     end
   end

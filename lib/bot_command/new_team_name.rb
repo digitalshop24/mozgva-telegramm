@@ -14,7 +14,7 @@ module BotCommand
       else
         user.update_attribute(:team_name, text)
         user.registration_data.update_attribute(:team_name, text) if user.registration_data.status != "from matching existing team"
-        question = "Пожалуйста, подтвердите название вашей команды, вы называетесь #{user.registration_data.team_name}?"
+        question = "Давайте еще раз сверим имя вашей команды. Я правильно запомнил: #{user.registration_data.team_name}?"
         send_keyboard(["Да", "Изменить название", "Отменить"], question)
         user.set_next_bot_command('BotCommand::AreYouSure')
       end

@@ -5,7 +5,7 @@ module BotCommand
     end
 
     def start
-      send_message('А вот это я еще не освоил, но я стараюсь')
+      send_message('А вот этого я пока не умею. Но это пока')
       send_message('Введи /help чтобы посмотреть, что я уже умею')
     end
   end

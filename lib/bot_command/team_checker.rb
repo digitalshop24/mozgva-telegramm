@@ -20,11 +20,11 @@ module BotCommand
           end
         end
         msg << "Отменить"
-        question = "На какую дату вы хотите зарегистрироваться?"
+        question = "Выбирайте дату"
         send_keyboard(msg, question)
         user.set_next_bot_command('BotCommand::NewTeamDate')
       else
-        question = "Такой команды не существует. Может быть вы написали название с ошибкой?"
+        question = "Упс, такой команды не существует. Может вы написали название с ошибкой?"
         keys = ["Написать название еще раз", "Зарегистрироваться как новая команда", "Отменить"]
         send_keyboard(keys, question)
         user.set_next_bot_command('BotCommand::NewFromExisting')

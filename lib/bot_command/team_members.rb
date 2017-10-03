@@ -11,7 +11,7 @@ module BotCommand
         question = "Ваш номер телефона #{user.phone_number}"
         send_keyboard(%w(Да Нет Отменить), question)
       else
-        question = "Введите номер телефона в формате 7 xxx xxx xx xx (минимум 9 цифр)\nТакже вы можете указать номер в настройках /settings, чтобы не вводить его каждый раз при регистрации."
+        question = "Введите номер телефона в формате 7 xxx xxx xx xx (минимум 9 цифр) здесь или укажите в настойках /settings"
         send_keyboard("Отменить", question)
       end
 

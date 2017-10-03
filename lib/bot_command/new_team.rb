@@ -14,7 +14,7 @@ module BotCommand
         end
       end
       msg << "Отменить"
-      question = "На какую дату вы хотите зарегистрироваться?"
+      question = "Выбирайте дату"
       send_keyboard(msg, question)
       user.set_next_bot_command('BotCommand::NewTeamDate')
     end

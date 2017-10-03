@@ -6,7 +6,7 @@ module BotCommand
 
     def start
       if text == "Написать название еще раз"
-        send_keyboard("Отменить", "Как называется Ваша команда? Напишите, пожалуйста, название в точь точь как на сайте mozgva.com")
+        send_keyboard("Отменить", "Как называется ваша команда? Пожалуйста, напишите имя команды, полностью совпадающее с указанным на сайте Mozgva.com.")
         user.set_next_bot_command('BotCommand::TeamChecker')
       elsif text == "Зарегистрироваться как новая команда"
         url = URI.parse("#{@mozgva_url}/api/v1/games/schedule?id=#{@id}")
@@ -18,7 +18,7 @@ module BotCommand
           end
         end
         msg << "Отменить"
-        question = "На какую дату вы хотите зарегистрироваться?"
+        question = "Выбирайте дату"
         send_keyboard(msg, question)
         user.set_next_bot_command('BotCommand::NewTeamDate')
 

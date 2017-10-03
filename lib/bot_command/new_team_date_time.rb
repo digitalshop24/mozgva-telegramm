@@ -10,11 +10,11 @@ module BotCommand
       end
       if user.team_name.present?
         user.registration_data.update_attribute(:team_name, user.team_name)
-        question = "Пожалуйста, подтвердите название вашей команды, вы называетесь #{user.team_name}?"
+        question = "Давайте еще раз сверим имя вашей команды. Я правильно запомнил: #{user.team_name}?"
         send_keyboard(["Да", "Изменить название", "Отменить"], question)
         user.set_next_bot_command('BotCommand::AreYouSure')
       elsif user.registration_data.team_name.present?
-        question = "Пожалуйста, подтвердите название вашей команды, вы называетесь #{user.registration_data.team_name}?"
+        question = "Давайте еще раз сверим имя вашей команды. Я правильно запомнил: #{user.registration_data.team_name}?"
         send_keyboard(["Да", "Изменить название", "Отменить"], question)
         user.set_next_bot_command('BotCommand::AreYouSure')
       else
