@@ -5,7 +5,7 @@ module BotCommand
     end
 
     def start
-      send_message("Я могу зарегистрировать Вас на игру. Правда вначале мне надо понять кто вы: новичок или коренной житель Мозгвы? Для этого выберите одну из команд\n /new_team (Новая команда)\n /existing_team (Существующая команда)")
+      send_message(I18n.t('game_registration_greeter'))
       user.reset_next_bot_command
     end
 

@@ -5,8 +5,8 @@ module BotCommand
     end
 
     def start
-      question = "Персональные настройки. Выберите что вы хотите просмотреть/изменить"
-      send_keyboard(%w(Имя Секретный\ код Название\ команды Телефон Отменить), question)
+      question = I18n.t('personal_settings')
+      send_keyboard(I18n.t('personal_settings_keyboard'), question)
       user.set_next_bot_command('BotCommand::SettingsRouter')
     end
   end

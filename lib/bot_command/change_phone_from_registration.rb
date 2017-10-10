@@ -12,7 +12,7 @@ module BotCommand
     end
 
     def undefined
-      question = "Введите номер телефона в формате 7 xxx xxx xx xx (минимум 9 цифр)"
+      question =  I18n.t('number_format_alert')
       send_keyboard("Отменить", question)
     end
   end

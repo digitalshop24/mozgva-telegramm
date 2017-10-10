@@ -1,14 +1,14 @@
 module BotCommand
   class NewFromExisting < Base
     def should_start?
-      ["Написать название еще раз", "Зарегистрироваться как новая команда"].include?(text)
+      [I18n.t('write_again_team_name'), I18n.t('register_as_new')].include?(text)
     end
 
     def start
-      if text == "Написать название еще раз"
-        send_keyboard("Отменить", "Как называется ваша команда? Пожалуйста, напишите имя команды, полностью совпадающее с указанным на сайте Mozgva.com.")
+      if text == I18n.t('write_again_team_name')
+        send_keyboard("Отменить", I18n.t('team_name_question'))
         user.set_next_bot_command('BotCommand::TeamChecker')
-      elsif text == "Зарегистрироваться как новая команда"
+      elsif text == I18n.t('register_as_new')
         url = URI.parse("#{@mozgva_url}/api/v1/games/schedule?id=#{@id}")
         schedule = JSON.parse(Net::HTTP.get(url))
         msg = []
@@ -18,7 +18,7 @@ module BotCommand
           end
         end
         msg << "Отменить"
-        question = "Выбирайте дату"
+        question = I18n.t('choose_the_date')
         send_keyboard(msg, question)
         user.set_next_bot_command('BotCommand::NewTeamDate')
 
@@ -26,7 +26,7 @@ module BotCommand
     end
 
     def undefined
-      send_message("Пожалуйста, выберите из списка снизу")
+      send_message(I18n.t('wrong_date_alert'))
     end
   end
 end

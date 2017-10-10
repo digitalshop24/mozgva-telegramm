@@ -5,7 +5,7 @@ module BotCommand
     end
 
     def start
-      remove_keyboard("Отменено\nЧто бы продолжить нажмите /help")
+      remove_keyboard(I18n.t('cancel'))
       user.reset_next_bot_command
     end
   end

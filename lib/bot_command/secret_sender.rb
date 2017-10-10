@@ -5,7 +5,7 @@ module BotCommand
     end
 
     def start
-      if text == "Выслать мне секретный код"
+      if text == I18n.t('send_me_secret')
         team_name = URI.encode(user.registration_data.team_name)
         response = %x[curl -X GET --header 'Accept: application/json' '#{@mozgva_url}/api/v1/teams/find?name=#{team_name}']
         begin
@@ -22,17 +22,17 @@ module BotCommand
         status = result["status"]
         message = result["message"]
         if status
-          send_keyboard("Отменить", "Пожалуйста, введите код")
+          send_keyboard("Отменить", I18n.t('enter_secret'))
           user.set_next_bot_command('BotCommand::SecretSender')
         else
-          send_keyboard(["Выслать мне секретный код", "Отменить"], "Что-то пошло не так:\n#{message}\nВведите код еще раз или отмените")
+          send_keyboard([I18n.t('send_me_secret'), "Отменить"], I18n.t('secret_error', message: message))
           user.set_next_bot_command('BotCommand::SecretSender')
         end
 
 
       else
-        if text == "Ввести новый секретный код"
-          send_keyboard("Отменить", "Введите код")
+        if text == I18n.t('enter_new_secret')
+          send_keyboard("Отменить", I18n.t('enter_secret'))
           user.set_next_bot_command('BotCommand::SecretSender')
         else
           if text == "Да"
@@ -46,7 +46,7 @@ module BotCommand
           status = response["success"] if response.present?
           mess = response["message"] if response.present?
           if status
-            message = "Все в порядке: команда #{user.registration_data.team_name} в количестве #{user.registration_data.member_amount} зарегистрирована на игру. Имя капитана и его телефон:\n#{user.nickname || (user.first_name.to_s + " " + user.last_name.to_s)} #{user.registration_data.phone} \nЧто бы продолжить нажмите /help"
+            message = I18n.t('registration_success', team_name: user.registration_data.team_name,member_amount: user.registration_data.member_amount,nickname: user.nickname || (user.first_name.to_s + " " + user.last_name.to_s),phone: user.registration_data.phone)
             remove_keyboard(message)
             user.reset_next_bot_command
             user.registration_data.destroy if user.registration_data.present?
@@ -55,7 +55,7 @@ module BotCommand
               remove_keyboard("Вы уже записались на эту игру\nЧто бы продолжить нажмите /help")
               user.reset_next_bot_command
             else
-              send_keyboard(["Выслать мне секретный код", "Отменить"], "Давайте попробуем еще раз")
+              send_keyboard([I18n.t('send_me_secret'), "Отменить"], "Давайте попробуем еще раз")
               user.set_next_bot_command('BotCommand::SecretSender')
             end
           end

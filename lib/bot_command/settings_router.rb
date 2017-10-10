@@ -7,26 +7,26 @@ module BotCommand
     def start
       case text
       when "Имя"
-        question = "Текущее имя: #{user.nickname || (user.first_name.to_s + " " + user.last_name.to_s) }\nХочешь изменить его?"
-        send_keyboard(%w(Да Нет Отменить), question)
+        question = I18n.t('current_name', username: user.nickname || (user.first_name.to_s + " " + user.last_name.to_s))
+        send_keyboard(I18n.t('y_n_c_keyboard'), question)
         user.set_next_bot_command('BotCommand::ChangeName')
       when "Секретный код"
-        question = "Текущий секретный код: #{user.secret}\nХочешь изменить его?"
-        send_keyboard(%w(Да Нет Отменить), question)
+        question = I18n.t('current_secret', secret: user.secret)
+        send_keyboard(I18n.t('y_n_c_keyboard'), question)
         user.set_next_bot_command('BotCommand::ChangeSecret')
       when "Название команды"
-        question = "Текущее название команды: #{user.team_name}\nХочешь изменить его?"
-        send_keyboard(%w(Да Нет Отменить), question)
+        question =I18n.t('current_team_name', team_name: user.team_name)
+        send_keyboard(I18n.t('y_n_c_keyboard'), question)
         user.set_next_bot_command('BotCommand::ChangeTeamName')
       when "Телефон"
-        question = "Текущий номер: #{user.phone_number}\nХочешь изменить его?"
-        send_keyboard(%w(Да Нет Отменить), question)
+        question = I18n.t('current_phone_number', phone_number: user.phone_number)
+        send_keyboard(I18n.t('y_n_c_keyboard'), question)
         user.set_next_bot_command('BotCommand::ChangePhone')
       end
     end
 
     def undefined
-      question = "Я понимаю только\nИмя, Секретный код, Название команды, Телефон"
+      question = I18n.t('router_undefined')
       send_keyboard("Отменить", question)
     end
   end

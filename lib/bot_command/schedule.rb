@@ -15,7 +15,7 @@ module BotCommand
         end
       end
 
-      send_message("Итак, ближайшие игры пройдут в эти даты: \n" + message + "\nВыбирайте любую, ну а потом я займусь регистрацией. Правда вначале мне надо понять кто вы: новичок или коренной житель Мозгвы? Для этого выберите одну из команд \n/new_team (Новая команда)\n /existing_team (Существующая команда)")
+      send_message(I18n.t('schedule', message: message))
       user.reset_next_bot_command
     end
   end

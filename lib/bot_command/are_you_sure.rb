@@ -1,29 +1,29 @@
 module BotCommand
   class AreYouSure < Base
     def should_start?
-      ["Изменить название", "Да", "Перейти к регистрации существующей команды"].include?(text)
+      [I18n.t('change_name'), "Да", I18n.t('existing_team_registration')].include?(text)
     end
 
     def start
-      if text == "Изменить название"
+      if text == I18n.t('change_name')
         user.registration_data.update_attribute(:status, "in progress")
-        question = "Так как же называть вашу команду?"
+        question = I18n.t('team_name_question')
         send_keyboard("Отменить", question)
         user.set_next_bot_command('BotCommand::NewTeamName')
       elsif text == "Да"
         if team_exists?(user.team_name)
-          question = "Такая команда уже существует"
-          send_keyboard(["Изменить название", "Перейти к регистрации существующей команды", "Отменить"], question)
+          question = I18n.t('team_already_exist')
+          send_keyboard([I18n.t('change_name'), I18n.t('existing_team_registration'), "Отменить"], question)
           user.set_next_bot_command('BotCommand::AreYouSure')
         else
-          question = "Сколько человек в команде? Напоминаю, максимум 9"
+          question = I18n.t('members_amount_question')
           keys = %w(1 2 3 4 5 6 7 8 9 Отменить)
           send_keyboard(keys, question)
           user.set_next_bot_command('BotCommand::TeamMembers')
         end
-      elsif text == "Перейти к регистрации существующей команды"
+      elsif text == I18n.t('existing_team_registration')
         user.registration_data.update_attribute(:status, "from matching existing team")
-        question = "Сколько человек в команде? Напоминаю, максимум 9"
+        question = I18n.t('members_amount_question')
         keys = %w(1 2 3 4 5 6 7 8 9 Отменить)
         send_keyboard(keys, question)
         user.set_next_bot_command('BotCommand::TeamMembers')

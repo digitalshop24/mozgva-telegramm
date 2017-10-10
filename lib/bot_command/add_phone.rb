@@ -6,14 +6,14 @@ module BotCommand
 
     def start
       user.update_attribute(:phone_number, text)
-      remove_keyboard("Телефон записан: #{user.phone_number}, #{user.nickname}\n")
-      question = "Персональные настройки. Выберите что вы хотите просмотреть/изменить"
-      send_keyboard(%w(Имя Секретный\ код Название\ команды Телефон Отменить), question)
+      remove_keyboard(I18n.t('add_phone_success', phone_number: user.phone_number, nickname: user.nickname || (user.first_name.to_s + " " + user.last_name.to_s)))
+      question = I18n.t('personal_settings')
+      send_keyboard(I18n.t('personal_settings_keyboard'), question)
       user.set_next_bot_command('BotCommand::SettingsRouter')
     end
 
     def undefined
-      question = "Введите номер телефона в формате 7 xxx xxx xx xx (минимум 9 цифр)"
+      question = I18n.t('number_format_alert')
       send_keyboard("Отменить", question)
     end
   end

@@ -10,22 +10,22 @@ module BotCommand
       end
       if user.team_name.present?
         user.registration_data.update_attribute(:team_name, user.team_name)
-        question = "Давайте еще раз сверим имя вашей команды. Я правильно запомнил: #{user.team_name}?"
-        send_keyboard(["Да", "Изменить название", "Отменить"], question)
+        question = I18n.t('team_name_clarification', team_name: user.team_name)
+        send_keyboard(["Да", I18n.t('change_name'), "Отменить"], question)
         user.set_next_bot_command('BotCommand::AreYouSure')
       elsif user.registration_data.team_name.present?
-        question = "Давайте еще раз сверим имя вашей команды. Я правильно запомнил: #{user.registration_data.team_name}?"
-        send_keyboard(["Да", "Изменить название", "Отменить"], question)
+        question = I18n.t('team_name_clarification', team_name: user.registration_data.team_name)
+        send_keyboard(["Да", I18n.t('change_name'), "Отменить"], question)
         user.set_next_bot_command('BotCommand::AreYouSure')
       else
-        question = "Как будет называться Ваша команда?"
+        question = I18n.t('team_name_registration_qestion')
         send_keyboard("Отменить", question)
         user.set_next_bot_command('BotCommand::NewTeamName')
       end
     end
 
     def undefined
-      question = "Я понимаю даты только в формате 1 или 2 и т.д."
+      question = I18n.t('unknown_date_format')
       send_keyboard("Отменить", question)
     end
   end

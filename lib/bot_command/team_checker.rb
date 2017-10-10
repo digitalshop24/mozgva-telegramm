@@ -20,12 +20,12 @@ module BotCommand
           end
         end
         msg << "Отменить"
-        question = "Выбирайте дату"
+        question = I18n.t('choose_the_date')
         send_keyboard(msg, question)
         user.set_next_bot_command('BotCommand::NewTeamDate')
       else
-        question = "Упс, такой команды не существует. Может вы написали название с ошибкой?"
-        keys = ["Написать название еще раз", "Зарегистрироваться как новая команда", "Отменить"]
+        question = I18n.t('no_such_team')
+        keys = [I18n.t('write_again_team_name'), I18n.t('register_as_new'), "Отменить"]
         send_keyboard(keys, question)
         user.set_next_bot_command('BotCommand::NewFromExisting')
       end

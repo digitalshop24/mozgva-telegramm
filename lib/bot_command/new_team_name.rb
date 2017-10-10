@@ -8,20 +8,20 @@ module BotCommand
       if team_exists? text
         user.update_attribute(:team_name, text)
         user.registration_data.update_attribute(:team_name, text)
-        question = "Такая команда уже существует"
-        send_keyboard(["Изменить название", "Перейти к регистрации существующей команды", "Отменить"], question)
+        question = I18n.t('team_already_exist')
+        send_keyboard([I18n.t('change_name'), I18n.t('existing_team_registration'), "Отменить"], question)
         user.set_next_bot_command('BotCommand::AreYouSure')
       else
         user.update_attribute(:team_name, text)
         user.registration_data.update_attribute(:team_name, text) if user.registration_data.status != "from matching existing team"
-        question = "Давайте еще раз сверим имя вашей команды. Я правильно запомнил: #{user.registration_data.team_name}?"
-        send_keyboard(["Да", "Изменить название", "Отменить"], question)
+        question = I18n.t('team_name_clarification', team_name: user.registration_data.team_name)
+        send_keyboard(["Да", I18n.t('change_name'), "Отменить"], question)
         user.set_next_bot_command('BotCommand::AreYouSure')
       end
     end
 
     def undefined
-      question = "Введите название команды еще раз"
+      question = I18n.t('enter_team_name_again')
       send_keyboard("Отменить", question)
     end
 

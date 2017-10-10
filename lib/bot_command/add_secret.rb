@@ -6,9 +6,9 @@ module BotCommand
 
     def start
       user.update_attribute(:secret, text)
-      remove_keyboard("Секретный код записан: #{user.secret}, #{user.nickname}\n")
-      question = "Персональные настройки. Выберите что вы хотите просмотреть/изменить"
-      send_keyboard(%w(Имя Секретный\ код Название\ команды Телефон Отменить), question)
+      remove_keyboard(I18n.t('add_secret_success', secret: user.secret, nickname: user.nickname || (user.first_name.to_s + " " + user.last_name.to_s)))
+      question = I18n.t('personal_settings')
+      send_keyboard(I18n.t('personal_settings_keyboard'), question)
       user.set_next_bot_command('BotCommand::SettingsRouter')
     end
   end

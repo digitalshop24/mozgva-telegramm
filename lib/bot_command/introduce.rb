@@ -6,7 +6,7 @@ module BotCommand
 
   def start
     if text == "Да"
-      remove_keyboard("Приятно познакомится. Надеюсь, это взаимно)\nЧто бы продолжить нажмите /help")
+      remove_keyboard(I18n.t('intoduce_greeting'))
       user.reset_next_bot_command
     else
       question = "Как тебя зовут?"

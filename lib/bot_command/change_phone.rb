@@ -7,12 +7,12 @@ module BotCommand
     def start
       case text
       when "Да"
-        question = "Введите номер телефона в формате 7 xxx xxx xx xx (минимум 9 цифр)"
+        question = I18n.t('number_format_alert')
         send_keyboard("Отменить", question)
         user.set_next_bot_command('BotCommand::AddPhone')
       when "Нет"
-        question = "Персональные настройки. Выберите что вы хотите просмотреть/изменить"
-        send_keyboard(%w(Имя Секретный\ код Название\ команды Телефон Отменить), question)
+        question = I18n.t('personal_settings')
+        send_keyboard(I18n.t('personal_settings_keyboard'), question)
         user.set_next_bot_command('BotCommand::SettingsRouter')
       end
     end

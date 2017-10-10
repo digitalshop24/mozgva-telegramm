@@ -10,7 +10,7 @@ module BotCommand
       @message = message
       token = ENV['token']
       @api = ::Telegram::Bot::Api.new(token)
-      @greeting = "Привет, я Мозгва_бот.\nС радостью, на которую только способен бот, я расскажу о предстоящих играх или помогу зарегистрироваться\nВот что я умею:\n/game_registration - Регистриция на игру \n/schedule - Расписание игр\n/settings - Персональные настройки (Имя, название команды, секретный код, номер телефона. Используются при регистрации)"
+      @greeting = I18n.t('greeting')
       @mozgva_url = "https://mozgva.com"
       @mozgva_api_key = "Test_afisha_api_key_654321"
       @id = "1"
