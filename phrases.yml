@@ -78,7 +78,7 @@ settings:
     "Название команды записано: #{user.team_name}, #{user.nickname}"
     "Текущее название команды: #{user.team_name}\nХочешь изменить его?"
   personal_phone:
-    "Введите номер телефона в формате 7 xxx xxx xx xx (минимум 9 цифр)"
+    "Введите номер телефона в формате +7 xxx xxx xx xx (минимум 9 цифр)"
     "Телефон записан: #{user.phone_number}, #{user.nickname}\n"
     "Текущий номер: #{user.phone_number}\nХочешь изменить его?"
 cancel:
